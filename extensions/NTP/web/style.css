@@ -1,0 +1,59 @@
+/* NTF Linkbar Style Sheet
+ * By Steve Kostecke kostecke@ntp.org - 20130830
+ */
+
+#ntf {
+	background-color: #f6f6f6;	
+	color: #2480bc;
+	line-height: 2em;
+	width: 100%;
+	margin-bottom: 0.2cm;
+	font-family: sans-serif;
+	font-weight: bolder;
+	border: thin solid #88cef1;
+}
+a.ntf {
+	text-decoration: none;  
+}
+div.ntf-button a.ntf {
+	color: #3f3f3f !important;
+}
+.ntf:hover {
+	text-decoration: underline;
+}
+#ntf-links {
+	text-align:center;
+}
+#ntf-links a.ntf {
+	color: blue;
+	font-weight: lighter;
+}
+#ntf-join {
+	float:left;
+	padding-left: 1.25em;
+	padding-right: 1.25em;
+}
+#ntf-donate {
+	float:right;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+div.ntf-button {
+	background-color: #fcc32f;
+	font-variant: small-caps;
+	font-weight: bolder;
+	font-size: larger;
+}
+
+/* Front page customizations */
+#ntp-intro {
+    text-align: left;
+}
+
+#releases {
+    float: right; 
+    border: 2px black solid; 
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
