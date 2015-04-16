@@ -49,6 +49,8 @@ use constant APACHE_MODULES => {
     mod_headers => 'headers_module',
     mod_env     => 'env_module',
     mod_expires => 'expires_module',
+    mod_rewrite => 'rewrite_module',
+    mod_version => 'version_module'
 };
 
 # These are all of the binaries that we could possibly use that can
@@ -280,6 +282,8 @@ sub OPTIONAL_MODULES {
         # Fixes various bugs, including 542931 and 552353 + stops
         # throwing warnings with Perl 5.12.
         version => '0.712',
+        # SOAP::Transport::HTTP 1.12 is bogus.
+        blacklist => ['^1\.12$'],
         feature => ['xmlrpc'],
     },
     # Since SOAP::Lite 1.0, XMLRPC::Lite is no longer included
@@ -396,6 +400,14 @@ sub OPTIONAL_MODULES {
         version => '0',
         feature => ['memcached'],
     },
+
+    # Documentation
+    {
+        package => 'File-Copy-Recursive',
+        module  => 'File::Copy::Recursive',
+        version => 0,
+        feature => ['documentation'],
+    }
     );
 
     my $extra_modules = _get_extension_requirements('OPTIONAL_MODULES');
@@ -502,7 +514,7 @@ sub _missing_apache_modules {
         return [];
     }
     my @missing;
-    foreach my $module (keys %$modules) {
+    foreach my $module (sort keys %$modules) {
         my $ok = _check_apache_module($module, $modules->{$module}, 
                                       $cmd_info, $output);
         push(@missing, $module) if !$ok;

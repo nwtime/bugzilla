@@ -130,12 +130,22 @@ sub response {
         $result = $json_data->{result};
     }
 
+    # The result needs to be a valid JSON data structure
+    # and not a undefined or scalar value.
+    if (!ref $result
+        || blessed($result)
+        || ref $result ne 'HASH'
+        || ref $result ne 'ARRAY')
+    {
+        $result = { result => $result };
+    }
+
     Bugzilla::Hook::process('webservice_rest_response',
         { rpc => $self, result => \$result, response => $response });
 
     # Access Control
     $response->header("Access-Control-Allow-Origin", "*");
-    $response->header("Access-Control-Allow-Headers", "origin, content-type, accept");
+    $response->header("Access-Control-Allow-Headers", "origin, content-type, accept, x-requested-with");
 
     # ETag support
     my $etag = $self->bz_etag;

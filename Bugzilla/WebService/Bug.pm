@@ -62,6 +62,27 @@ use constant READ_ONLY => qw(
     search
 );
 
+use constant PUBLIC_METHODS => qw(
+    add_attachment
+    add_comment
+    attachments
+    comments
+    create
+    fields
+    get
+    history
+    legal_values
+    possible_duplicates
+    render_comment
+    search
+    search_comment_tags
+    update
+    update_attachment
+    update_comment_tags
+    update_see_also
+    update_tags
+);
+
 use constant ATTACHMENT_MAPPED_SETTERS => {
     file_name => 'filename',
     summary   => 'description',
@@ -75,17 +96,6 @@ use constant ATTACHMENT_MAPPED_RETURNS => {
     filename    => 'file_name',
     mimetype    => 'content_type',
 };
-
-######################################################
-# Add aliases here for old method name compatibility #
-######################################################
-
-BEGIN { 
-  # In 3.0, get was called get_bugs
-  *get_bugs = \&get;
-  # Before 3.4rc1, "history" was get_history.
-  *get_history = \&history;
-}
 
 ###########
 # Methods #
@@ -952,19 +962,10 @@ sub add_comment {
     # Append comment
     $bug->add_comment($comment, { isprivate => $params->{is_private},
                                   work_time => $params->{work_time} });
-    
-    # Capture the call to bug->update (which creates the new comment) in 
-    # a transaction so we're sure to get the correct comment_id.
-    
-    my $dbh = Bugzilla->dbh;
-    $dbh->bz_start_transaction();
-    
     $bug->update();
-    
-    my $new_comment_id = $dbh->bz_last_key('longdescs', 'comment_id');
-    
-    $dbh->bz_commit_transaction();
-    
+
+    my $new_comment_id = $bug->{added_comments}[0]->id;
+
     # Send mail.
     Bugzilla::BugMail::Send($bug->bug_id, { changer => $user });
 
@@ -2130,8 +2131,6 @@ B<STABLE>
 =item B<Description>
 
 Gets information about particular bugs in the database.
-
-Note: Can also be called as "get_bugs" for compatibilty with Bugzilla 3.0 API.
 
 =item B<REST>
 
@@ -3527,7 +3526,7 @@ C<boolean> Set to true if you specifically want a new flag to be created.
 
 =item B<Returns>
 
-A C<hash> with a single field, "attachment". This points to an array of hashes
+A C<hash> with a single field, "attachments". This points to an array of hashes
 with the following fields:
 
 =over
@@ -4652,9 +4651,5 @@ This method can throw all of the errors that L</get> throws.
 =head1 B<Methods in need of POD>
 
 =over
-
-=item get_bugs
-
-=item get_history
 
 =back
