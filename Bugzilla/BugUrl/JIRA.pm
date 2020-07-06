@@ -11,32 +11,33 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Bugzilla::BugUrl);
+use base qw(Bugzilla::BugUrl);
 
 ###############################
 ####        Methods        ####
 ###############################
 
 sub should_handle {
-    my ($class, $uri) = @_;
+  my ($class, $uri) = @_;
 
-    # JIRA URLs have only one basic form (but the jira is optional):
-    #   https://issues.apache.org/jira/browse/KEY-1234
-    #   http://issues.example.com/browse/KEY-1234
-    return ($uri->path =~ m|/browse/[A-Z][A-Z]+-\d+$|) ? 1 : 0;
+  # JIRA URLs have only one basic form (but the jira is optional):
+  #   https://issues.apache.org/jira/browse/KEY-1234
+  #   http://issues.example.com/browse/KEY-1234
+  return ($uri->path =~ m|/browse/[A-Z][A-Z]+-\d+$|) ? 1 : 0;
 }
 
 sub _check_value {
-    my $class = shift;
+  my $class = shift;
 
-    my $uri = $class->SUPER::_check_value(@_);
+  my $uri = $class->SUPER::_check_value(@_);
 
-    # Make sure there are no query parameters.
-    $uri->query(undef);
-    # And remove any # part if there is one.
-    $uri->fragment(undef);
+  # Make sure there are no query parameters.
+  $uri->query(undef);
 
-    return $uri;
+  # And remove any # part if there is one.
+  $uri->fragment(undef);
+
+  return $uri;
 }
 
 1;

@@ -32,8 +32,10 @@
   header_addl_info = ""
   onload = ""
   style_urls = []
+  javascript_urls = []
   yui = []
   generate_api_token = 0
+  favicon_url = "images/favicon.ico"
 %]
 
 [% SET yui_css = {
@@ -86,6 +88,8 @@
     [% IF Param('utf8') %]
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     [% END %]
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     [% SET yui = yui_resolve_deps(yui, yui_deps) %]
 
@@ -207,7 +211,7 @@
     [%# Required for the 'Autodiscovery' feature in Firefox 2 and IE 7. %]
     <link rel="search" type="application/opensearchdescription+xml"
                        title="[% terms.Bugzilla %]" href="./search_plugin.cgi">
-    <link rel="shortcut icon" href="images/favicon.ico" >
+    <link rel="shortcut icon" href="[% favicon_url FILTER html %]">
     [% Hook.process("additional_header") %]
   </head>
 
@@ -232,10 +236,7 @@
       [% END %]
     </div>
 
-    <div id="common_links">
-      [% PROCESS "global/common-links.html.tmpl" qs_suffix = "_top" %]
-    </div>
-
+    [% USE Bugzilla %]
     [% IF Bugzilla.languages.size > 1 %]
       <div id="lang_links_container" class="bz_default_hidden">
         <ul class="links">
@@ -253,6 +254,10 @@
         </ul>
       </div>
     [% END %]
+
+    <div id="common_links">
+      [% PROCESS "global/common-links.html.tmpl" qs_suffix = "_top" %]
+    </div>
   </div>
 
   <div id="bugzilla-body">

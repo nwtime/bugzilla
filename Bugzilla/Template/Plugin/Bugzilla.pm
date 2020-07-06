@@ -11,25 +11,25 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Template::Plugin);
+use base qw(Template::Plugin);
 
 use Bugzilla;
 
 sub new {
-    my ($class, $context) = @_;
+  my ($class, $context) = @_;
 
-    return bless {}, $class;
+  return bless {}, $class;
 }
 
 sub AUTOLOAD {
-    my $class = shift;
-    our $AUTOLOAD;
+  my $class = shift;
+  our $AUTOLOAD;
 
-    $AUTOLOAD =~ s/^.*:://;
+  $AUTOLOAD =~ s/^.*:://;
 
-    return if $AUTOLOAD eq 'DESTROY';
+  return if $AUTOLOAD eq 'DESTROY';
 
-    return Bugzilla->$AUTOLOAD(@_);
+  return Bugzilla->$AUTOLOAD(@_);
 }
 
 1;

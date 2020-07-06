@@ -35,23 +35,21 @@ The following command will install Red Hat's packaged version of Bugzilla:
 
 :command:`yum install bugzilla httpd mysql-server`
 
-However, if you go this route, you need to read :bug:`415605`, which details
-some problems with the Email::Send package. Then, you can skip to
-:ref:`configuring your database <linux-config-database>`. It may be useful to
-know that Fedora stores the Bugzilla files in :file:`/usr/share/bugzilla`, so
-that's where you'll run :file:`checksetup.pl`.
+Then, you can skip to :ref:`configuring your database <linux-config-database>`.
+It may be useful to know that Fedora stores the Bugzilla files in
+:file:`/usr/share/bugzilla`, so that's where you'll run :file:`checksetup.pl`.
 
 If you want to install a version of Bugzilla from the Bugzilla project, you
 will instead need:
 
 :command:`yum install httpd mysql-server mod_perl mod_perl-devel httpd-devel
+gd-devel mysql-devel
 graphviz patchutils gcc 'perl(Apache2::SizeLimit)' 'perl(Authen::Radius)'
 'perl(Authen::SASL)' 'perl(Cache::Memcached)' 'perl(CGI)' 'perl(Chart::Lines)'
 'perl(Daemon::Generic)' 'perl(Date::Format)' 'perl(DateTime)'
 'perl(DateTime::TimeZone)' 'perl(DBI)' 'perl(Digest::SHA)' 'perl(Email::MIME)'
-'perl(Email::MIME::Attachment::Stripper)' 'perl(Email::Reply)'
-'perl(Email::Sender)' 'perl(Encode)' 'perl(Encode::Detect)'
-'perl(File::MimeInfo::Magic)' 'perl(File::Slurp)' 'perl(GD)' 'perl(GD::Graph)'
+'perl(Email::Reply)' 'perl(Email::Sender)' 'perl(Encode)' 'perl(Encode::Detect)'
+'perl(File::MimeInfo::Magic)' 'perl(GD)' 'perl(GD::Graph)'
 'perl(GD::Text)' 'perl(HTML::FormatText::WithLinks)' 'perl(HTML::Parser)'
 'perl(HTML::Scrubber)' 'perl(IO::Scalar)' 'perl(JSON::RPC)' 'perl(JSON::XS)'
 'perl(List::MoreUtils)' 'perl(LWP::UserAgent)' 'perl(Math::Random::ISAAC)'
@@ -63,7 +61,7 @@ graphviz patchutils gcc 'perl(Apache2::SizeLimit)' 'perl(Authen::Radius)'
 If you are running RHEL6, you will have to enable the "RHEL Server Optional"
 channel in RHN to get some of those packages. 
 
-If you plan to use SQlite as your database, you will need to also install
+If you plan to use a database other than MySQL, you will need to also install
 the appropriate packages for that.
 
 Ubuntu and Debian
@@ -83,9 +81,10 @@ libjson-rpc-perl libdaemon-generic-perl libtheschwartz-perl
 libtest-taint-perl libauthen-radius-perl libfile-slurp-perl
 libencode-detect-perl libmodule-build-perl libnet-ldap-perl
 libauthen-sasl-perl libtemplate-perl-doc libfile-mimeinfo-perl
-libhtml-formattext-withlinks-perl libgd-dev lynx-cur graphviz python-sphinx`
+libhtml-formattext-withlinks-perl libgd-dev libmysqlclient-dev lynx-cur
+graphviz python-sphinx`
 
-If you plan to use SQlite as your database, you will need to also install
+If you plan to use a database other than MySQL, you will need to also install
 the appropriate packages for that.
 
 Gentoo
@@ -118,7 +117,7 @@ Bugzilla
 
 The best way to get Bugzilla is to check it out from git:
 
-:command:`git clone --branch bugzilla-X.X-stable https://git.mozilla.org/bugzilla/bugzilla`
+:command:`git clone --branch release-X.X-stable https://github.com/bugzilla/bugzilla`
 
 Run the above command in your home directory, replacing "X.X" with the 2-digit
 version number of the stable release of Bugzilla that you want - e.g. "4.4".
@@ -170,16 +169,6 @@ Bugzilla) like this:
 Or, you can pass an individual module name:
 
 :command:`./install-module.pl <modulename>`
-
-.. note:: If you are using a package-based distribution, and attempting to
-   install the Perl modules from CPAN (e.g. by using :file:`install-module.pl`),
-   you may need to install the "development"
-   packages for MySQL and GD before attempting to install the related Perl
-   modules. The names of these packages will vary depending on the specific
-   distribution you are using, but are often called :file:`<packagename>-devel`.
-
-   .. todo:: Give examples for Debian/Ubuntu and RedHat.
-             Convert this item to a bug after checkin.
 
 .. _linux-config-webserver:
 

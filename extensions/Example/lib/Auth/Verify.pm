@@ -11,12 +11,12 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Bugzilla::Auth::Verify);
+use base qw(Bugzilla::Auth::Verify);
 use Bugzilla::Constants;
 
 # A verifier that always fails.
 sub check_credentials {
-    return { failure => AUTH_NO_SUCH_USER };
+  return {failure => AUTH_NO_SUCH_USER};
 }
 
 1;

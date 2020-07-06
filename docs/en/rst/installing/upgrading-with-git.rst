@@ -9,6 +9,18 @@ intermediate steps. There is a script named :file:`checksetup.pl` included
 with Bugzilla that will automatically do all of the database migration
 for you.
 
+Bugzilla is now hosted on Github, but we used to be hosted on git.mozilla.org.
+If you got the code from git.mozilla.org, you need to point your
+checkout at Github instead. To find out, run:
+
+:command:`git remote -v`
+
+If you see "git.mozilla.org" anywhere in the output, then run:
+
+:command:`git remote set-url origin https://github.com/bugzilla/bugzilla`
+
+This change will only ever need to be done once.
+
 .. include:: upgrading-with-1.inc.rst
 
 You can see if you have local code customizations using:
@@ -54,7 +66,7 @@ you can get the latest point release of your current version by simply doing:
 If you want to upgrade to a newer release of Bugzilla, then you will
 additionally need to do:
 
-:command:`git checkout bugzilla-X.X-stable`
+:command:`git checkout release-X.X-stable`
 
 where "X.X" is the 2-digit version number of the stable version you want to
 upgrade to (e.g. "4.4").

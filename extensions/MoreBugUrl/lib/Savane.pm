@@ -11,30 +11,30 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Bugzilla::BugUrl);
+use base qw(Bugzilla::BugUrl);
 
 ###############################
 ####        Methods        ####
 ###############################
 
 sub should_handle {
-    my ($class, $uri) = @_;
-    return ($uri->as_string =~ m|/bugs/(index\.php)?\?\d+$|) ? 1 : 0;
+  my ($class, $uri) = @_;
+  return ($uri->as_string =~ m|/bugs/(index\.php)?\?\d+$|) ? 1 : 0;
 }
 
 sub _check_value {
-    my $class = shift;
+  my $class = shift;
 
-    my $uri = $class->SUPER::_check_value(@_);
+  my $uri = $class->SUPER::_check_value(@_);
 
-    # Savane URLs have only two forms:
-    #   http://gna.org/bugs/index.php?12345
-    #   http://gna.org/bugs/?12345
+  # Savane URLs have only two forms:
+  #   http://gna.org/bugs/index.php?12345
+  #   http://gna.org/bugs/?12345
 
-    # And remove any # part if there is one.
-    $uri->fragment(undef);
+  # And remove any # part if there is one.
+  $uri->fragment(undef);
 
-    return $uri;
+  return $uri;
 }
 
 1;

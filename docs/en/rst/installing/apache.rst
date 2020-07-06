@@ -68,7 +68,7 @@ mod_cgi, do the following:
      AddHandler cgi-script .cgi
      Options +ExecCGI +FollowSymLinks
      DirectoryIndex index.cgi index.html
-     AllowOverride Limit FileInfo Indexes Options
+     AllowOverride All
    </Directory>
 
 These instructions allow Apache to run .cgi files found within the Bugzilla
@@ -76,6 +76,14 @@ directory; instructs the server to look for a file called :file:`index.cgi`
 or, if not found, :file:`index.html` if someone only types the directory name
 into the browser; and allows Bugzilla's :file:`.htaccess` files to override
 some global permissions.
+
+On some Linux distributions you will need to enable the Apache CGI
+module. On Debian/Ubuntu, this is done with:
+
+:command:`sudo a2enmod cgi`
+
+If you find that the webserver is returning the Perl code as text rather
+than executing it, then this is the problem.
 
 .. _apache-mod_perl:
 

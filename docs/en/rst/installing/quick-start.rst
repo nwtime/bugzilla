@@ -5,8 +5,8 @@ Quick Start (Ubuntu Linux 14.04)
 
 This quick start guide makes installing Bugzilla as simple as possible for
 those who are able to choose their environment. It creates a system using
-Ubuntu Linux 14.04 LTS, Apache and MySQL, and installs Bugzilla as the default
-home page. It requires a little familiarity with Linux and the command line.
+Ubuntu Linux 14.04 LTS, Apache and MySQL. It requires a little familiarity
+with Linux and the command line.
 
 Obtain Your Hardware
 ====================
@@ -50,7 +50,7 @@ Install Prerequisites
 
 :command:`apt-get install git nano`
 
-:command:`apt-get install apache2 mysql-server libappconfig-perl libdate-calc-perl libtemplate-perl libmime-perl build-essential libdatetime-timezone-perl libdatetime-perl libemail-sender-perl libemail-mime-perl libemail-mime-modifier-perl libdbi-perl libdbd-mysql-perl libcgi-pm-perl libmath-random-isaac-perl libmath-random-isaac-xs-perl apache2-mpm-prefork libapache2-mod-perl2 libapache2-mod-perl2-dev libchart-perl libxml-perl libxml-twig-perl perlmagick libgd-graph-perl libtemplate-plugin-gd-perl libsoap-lite-perl libhtml-scrubber-perl libjson-rpc-perl libdaemon-generic-perl libtheschwartz-perl libtest-taint-perl libauthen-radius-perl libfile-slurp-perl libencode-detect-perl libmodule-build-perl libnet-ldap-perl libauthen-sasl-perl libtemplate-perl-doc libfile-mimeinfo-perl libhtml-formattext-withlinks-perl libgd-dev lynx-cur python-sphinx`
+:command:`apt-get install apache2 mysql-server libappconfig-perl libdate-calc-perl libtemplate-perl libmime-perl build-essential libdatetime-timezone-perl libdatetime-perl libemail-sender-perl libemail-mime-perl libemail-mime-modifier-perl libdbi-perl libdbd-mysql-perl libcgi-pm-perl libmath-random-isaac-perl libmath-random-isaac-xs-perl apache2-mpm-prefork libapache2-mod-perl2 libapache2-mod-perl2-dev libchart-perl libxml-perl libxml-twig-perl perlmagick libgd-graph-perl libtemplate-plugin-gd-perl libsoap-lite-perl libhtml-scrubber-perl libjson-rpc-perl libdaemon-generic-perl libtheschwartz-perl libtest-taint-perl libauthen-radius-perl libfile-slurp-perl libencode-detect-perl libmodule-build-perl libnet-ldap-perl libauthen-sasl-perl libtemplate-perl-doc libfile-mimeinfo-perl libhtml-formattext-withlinks-perl libgd-dev libmysqlclient-dev lynx-cur graphviz python-sphinx`
 
 This will take a little while. It's split into two commands so you can do
 the next steps (up to step 7) in another terminal while you wait for the
@@ -62,17 +62,13 @@ Download Bugzilla
 
 Get it from our Git repository:
 
-:command:`cd /var/www`
+:command:`cd /var/www/html`
 
-:command:`rm -rf html`
-
-:command:`git clone --branch bugzilla-X.X-stable https://git.mozilla.org/bugzilla/bugzilla html`
+:command:`git clone --branch release-X.X-stable https://github.com/bugzilla/bugzilla bugzilla`
 
 (where "X.X" is the 2-digit version number of the stable release of Bugzilla
-that you want - e.g. 4.4)
+that you want - e.g. 5.0)
 
-:command:`cd html`
-   
 Configure MySQL
 ===============
 
@@ -85,7 +81,7 @@ Set the following values, which increase the maximum attachment size and
 make it possible to search for short words and terms:
 
 * Alter on Line 52: ``max_allowed_packet=100M``
-* Add as new line 31, in the ``[mysqld]`` section: ``ft_min_word_len=2``
+* Add as new line 32, in the ``[mysqld]`` section: ``ft_min_word_len=2``
 
 Save and exit.
 
@@ -113,11 +109,11 @@ Paste in the following and save:
 
  ServerName localhost
 
- <Directory /var/www/html>
+ <Directory /var/www/html/bugzilla>
    AddHandler cgi-script .cgi
    Options +ExecCGI
    DirectoryIndex index.cgi index.html
-   AllowOverride Limit FileInfo Indexes Options
+   AllowOverride All
  </Directory>
 
 :command:`a2ensite bugzilla`
@@ -135,7 +131,7 @@ generates a config file (called :file:`localconfig`) for the database
 access information, and the second time (step 10)
 it uses the info you put in the config file to set up the database.
 
-:command:`cd /var/www/html`
+:command:`cd /var/www/html/bugzilla`
 
 :command:`./checksetup.pl`
 
@@ -164,7 +160,7 @@ Write down the email address and password you set.
 Test Server
 ===========
 
-:command:`./testserver.pl http://localhost/`
+:command:`./testserver.pl http://localhost/bugzilla`
 
 All the tests should pass. You will get warnings about deprecation from
 the ``Chart::Base`` Perl module; just ignore those.
@@ -178,7 +174,7 @@ Access Via Web Browser
 
 Access the front page:
 
-:command:`lynx http://localhost/`
+:command:`lynx http://localhost/bugzilla`
 
 It's not really possible to use Bugzilla for real through Lynx, but you
 can view the front page to validate visually that it's up and running.
@@ -186,8 +182,8 @@ can view the front page to validate visually that it's up and running.
 You might well need to configure your DNS such that the server has, and
 is reachable by, a name rather than IP address. Doing so is out of scope
 of this document. In the mean time, it is available on your local network
-at ``http://<ip address>/``, where ``<ip address>`` is (unless you have
-a complex network setup) the "inet addr" value displayed when you run
+at ``http://<ip address>/bugzilla``, where ``<ip address>`` is (unless you
+have a complex network setup) the "inet addr" value displayed when you run
 :command:`ifconfig eth0`.
 
 Configure Bugzilla
@@ -201,7 +197,7 @@ Click the :guilabel:`Parameters` link on the page it gives you, and set
 the following parameters in the :guilabel:`Required Settings` section:
 
 * :param:`urlbase`:
-  :paramval:`http://<servername>/` or :paramval:`http://<ip address>/`
+  :paramval:`http://<servername>/bugzilla/` or :paramval:`http://<ip address>/bugzilla/`
 
 Click :guilabel:`Save Changes` at the bottom of the page.
 

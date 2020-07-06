@@ -11,16 +11,16 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Bugzilla::User::Setting);
+use base qw(Bugzilla::User::Setting);
 
 use Bugzilla::Constants;
 
 sub legal_values {
-    my ($self) = @_;
+  my ($self) = @_;
 
-    return $self->{'legal_values'} if defined $self->{'legal_values'};
+  return $self->{'legal_values'} if defined $self->{'legal_values'};
 
-    return $self->{'legal_values'} = Bugzilla->languages;
+  return $self->{'legal_values'} = Bugzilla->languages;
 }
 
 1;

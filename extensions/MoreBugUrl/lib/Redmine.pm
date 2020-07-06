@@ -11,31 +11,32 @@ use 5.10.1;
 use strict;
 use warnings;
 
-use parent qw(Bugzilla::BugUrl);
+use base qw(Bugzilla::BugUrl);
 
 ###############################
 ####        Methods        ####
 ###############################
 
 sub should_handle {
-    my ($class, $uri) = @_;
-    return ($uri->path =~ m|/issues/\d+$|) ? 1 : 0;
+  my ($class, $uri) = @_;
+  return ($uri->path =~ m|/issues/\d+$|) ? 1 : 0;
 }
 
 sub _check_value {
-    my $class = shift;
+  my $class = shift;
 
-    my $uri = $class->SUPER::_check_value(@_);
+  my $uri = $class->SUPER::_check_value(@_);
 
-    # Redmine URLs have only one form:
-    #   http://demo.redmine.com/issues/111
+  # Redmine URLs have only one form:
+  #   http://demo.redmine.com/issues/111
 
-    # Make sure there are no query parameters.
-    $uri->query(undef);
-    # And remove any # part if there is one.
-    $uri->fragment(undef);
+  # Make sure there are no query parameters.
+  $uri->query(undef);
 
-    return $uri;
+  # And remove any # part if there is one.
+  $uri->fragment(undef);
+
+  return $uri;
 }
 
 1;
