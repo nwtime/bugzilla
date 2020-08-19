@@ -3,7 +3,6 @@
 use LWP::UserAgent;
 use XML::Simple;
 use HTTP::Response;
-use Data::Dumper;
 use utf8;
 
 my %changelink = (
