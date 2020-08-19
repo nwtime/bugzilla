@@ -6,18 +6,14 @@
     <th>Download</th>
     <th>ChangeLog</th>
   </tr>
+  [% USE releasefile = datafile('/www/etc/ntp-releases.csv', delim = ',') %]
+  [% FOREACH release = releasefile %]
   <tr>
-    <td>Stable  </td>
-    <td>  4.2.8p15  </td>
-    <td>  2020/06/23  </td>
-    <td>  <a href="https://archive.ntp.org/ntp4/ntp-4.2/ntp-4.2.8p15.tar.gz">https</a>/<a href="https://archive.ntp.org/ntp4/ntp-4.2/ntp-4.2.8p15.tar.gz.md5">md5</a>  </td>
-    <td>  <a href="https://archive.ntp.org/ntp4/ChangeLog-stable">https</a>  </td>
+    <td>[% release.name FILTER html %]</td>
+    <td>[% release.version FILTER html %]</td>
+    <td>[% release.date FILTER html %]</td>
+    <td><a href="[% release.tarlink FILTER html %]">https</a>/<a href="[% release.md5link FILTER html %]">md5</a></td>
+    <td><a href="[% release.changelink FILTER html %]">https</a></td>
   </tr>
-  <tr>
-    <td>Development  </td>
-    <td>  4.3.99  </td>
-    <td>  2019/06/07  </td>
-    <td>  <a href="https://archive.ntp.org/ntp4/ntp-dev/ntp-dev-4.3.99.tar.gz">https</a>/<a href="https://archive.ntp.org/ntp4/ntp-dev/ntp-dev-4.3.99.tar.gz.md5">md5</a>  </td>
-    <td>  <a href="https://archive.ntp.org/ntp4/ChangeLog-dev">https</a>  </td>
-  </tr>
+  [% END %]
 </table>
